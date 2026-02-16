@@ -1,0 +1,69 @@
+# OpenCode Sandbox with Playwright
+# Uses system chromium instead of Playwright's bundled browser
+
+FROM simpleyyt/manus-sandbox:latest
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create directory for Playwright server
+RUN mkdir -p /opt/playwright-server
+WORKDIR /opt/playwright-server
+
+# Install Playwright locally (skip browser installation)
+RUN npm init -y && \
+    npm install playwright@latest && \
+    npm cache clean --force
+
+# Copy Playwright HTTP server
+COPY docker/playwright-server.js /opt/playwright-server/server.js
+RUN chmod +x /opt/playwright-server/server.js
+
+# Install chromium browser - download directly from official Ubuntu archive to bypass Aliyun mirror issues
+RUN apt-get update && \
+    # Download chromium-browser .deb package from official Ubuntu archive
+    wget -q http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser/chromium-browser_85.0.4183.83-0ubuntu2.22.04.1_amd64.deb && \
+    wget -q http://archive.ubuntu.com/ubuntu/pool/main/c/chromium-browser/chromium-chromedriver_85.0.4183.83-0ubuntu2.22.04.1_amd64.deb && \
+    # Install downloaded packages with dependencies
+    dpkg -i chromium-browser_85.0.4183.83-0ubuntu2.22.04.1_amd64.deb || apt-get install -y -f && \
+    dpkg -i chromium-chromedriver_85.0.4183.83-0ubuntu2.22.04.1_amd64.deb || true && \
+    # Cleanup
+    rm -f *.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install VNC and Display dependencies
+# Using official Ubuntu mirrors as they are confirmed reachable (200 OK) while Chinese mirrors are failing (502)
+# Also removing third-party sources (nodesource, ppa) that are causing apt-get update to fail
+RUN rm -rf /etc/apt/sources.list.d/* && \
+    echo "deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse" > /etc/apt/sources.list && \
+    echo "deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://security.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    xvfb \
+    fluxbox \
+    x11vnc \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy startup script
+COPY docker/start.sh /opt/playwright-server/start.sh
+RUN chmod +x /opt/playwright-server/start.sh
+
+# Expose Playwright API and VNC ports
+EXPOSE 9223 5900
+
+# Health check for Playwright server
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD node -e "require('http').get('http://localhost:9223/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start via wrapper script
+CMD ["/opt/playwright-server/start.sh"]

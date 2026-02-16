@@ -1,0 +1,39 @@
+# Dockerfile.api (Optimized for local cache + network limits)
+# Use simpleyyt/manus-sandbox:latest as base because:
+# 1. It is already cached locally (no download needed)
+# 2. It is based on Ubuntu (glibc compatible for Bun)
+# 3. It is separate from the heavy "opencode-sandbox-playwright" image
+FROM simpleyyt/manus-sandbox:latest
+
+WORKDIR /app
+
+# Install Bun via npm (bypass curl network issues)
+# Using registry.npmmirror.com for reliability in China
+# Note: simpleyyt base image might not have npm installed by default, so we install it first
+RUN apt-get update && \
+    apt-get install -y nodejs npm unzip && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm config set registry https://registry.npmmirror.com && \
+    npm install -g bun && \
+    npm config delete registry
+
+# Verify bun installation
+RUN bun --version
+
+# Copy workspace packages
+COPY packages/opencode ./packages/opencode
+COPY packages/util ./packages/util
+COPY packages/ui ./packages/ui
+COPY packages/sdk-js ./packages/sdk-js
+COPY packages/plugin ./packages/plugin
+COPY packages/function ./packages/function
+
+# Install dependencies
+COPY package.json bun.lockb* ./
+RUN bun install --frozen-lockfile --production --ignore-scripts
+
+# Expose port
+EXPOSE 3000
+
+# Start command
+CMD ["bun", "run", "--cwd", "packages/opencode", "bin/serve.ts"]

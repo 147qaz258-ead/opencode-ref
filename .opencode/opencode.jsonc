@@ -1,0 +1,55 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // "plugin": ["opencode-openai-codex-auth"],
+  // "enterprise": {
+  //   "url": "https://enterprise.dev.opencode.ai",
+  // },
+  "instructions": ["STYLE_GUIDE.md"],
+  "experimental": {
+    "docker": {
+      "enabled": true,
+      "image": "opencode-sandbox-playwright:latest",
+      "autoStart": true
+    }
+  },
+  "provider": {
+    "opencode": {
+      "options": {},
+    },
+    "oneapi": {
+      "options": {
+        "baseURL": "http://localhost:3001",
+        "apiKey": "sk-BDyNJ0FLQEQNP2ulF1D5B9D2682343E08367Cd15A0A97c17"
+      }
+    },
+    "volcengine": {
+      "name": "火山引擎 ARK",
+      "npm": "@ai-sdk/openai-compatible",
+      "api": "https://ark.cn-beijing.volces.com/api/v3",
+      "env": ["VOLCENGINE_API_KEY"],
+      "models": {
+        "Kimi-K2": {
+          "id": "ep-20260112195810-4lhmf",
+          "name": "Kimi K2",
+          "tool_call": true,
+          "reasoning": true,
+          "temperature": true,
+          "limit": {
+            "context": 128000,
+            "output": 4096
+          }
+        }
+      }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+    },
+  },
+  "tools": {
+    "github-triage": false,
+    "github-pr-search": false,
+  },
+}

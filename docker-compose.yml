@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Web 前端
+  web:
+    build:
+      context: .
+      dockerfile: packages/app/Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - BACKEND_URL=http://api:4096
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - opencode-network
+
+  # API 后端 (Agent 大脑)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "4096:4096"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Docker socket (只读)
+    environment:
+      - NODE_ENV=production
+      - OPENCODE_MODE=production
+      - MONGODB_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379
+      - OPENCODE_BACKEND=http-api
+      - PORT=4096
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - opencode-network
+
+  # MongoDB (状态存储)
+  mongodb:
+    image: mongo:7.0
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    environment:
+      - MONGO_INITDB_DATABASE=opencode
+    restart: unless-stopped
+    networks:
+      - opencode-network
+
+  # Redis (缓存)
+  redis:
+    image: redis:7.0-alpine
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - opencode-network
+
+volumes:
+  mongodb_data:
+  mongodb_config:
+  redis_data:
+
+networks:
+  opencode-network:
+    driver: bridge

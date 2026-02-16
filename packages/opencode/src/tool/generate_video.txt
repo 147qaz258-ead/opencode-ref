@@ -1,0 +1,38 @@
+Generate videos from text descriptions using AI models. The system uses the provider configured in your environment (VIDEO_PROVIDER in .env).
+
+## Parameters
+
+- prompt (required): The text description of the video to generate
+- model (optional): Override the default model. If not specified, uses the configured VIDEO_MODEL or provider's default
+- Additional parameters are passed through to the provider (e.g., num_frames, num_inference_steps, guidance_scale)
+
+## Supported Video Providers
+
+### zhipu (Zhipu AI)
+- Models: cogvideox
+- API: https://open.bigmodel.cn
+
+### hunyuan (Tencent Hunyuan 腾讯混元)
+- Models: hunyuan-video
+- API: https://hunyuan.tencentcloudapi.com
+
+### tongyi (Alibaba Tongyi 通义万象)
+- Models: wanx-v2
+- API: https://dashscope.aliyuncs.com
+
+### siliconcloud (SiliconCloud)
+- Models: Lightricks/LTX-Video
+- Ultra-fast: 4s video in ~4s
+- API: https://api.siliconflow.cn
+
+### huggingface (Hugging Face Inference)
+- Models: Lightricks/LTX-Video, Wan-AI/Wan2.1, and thousands of open-source models
+- API: https://api-inference.huggingface.co
+
+## Output
+
+The generated video is saved to /workspace/outputs/video_{timestamp}.mp4 and automatically displayed in the Monitor Panel.
+
+## Configuration
+
+The provider is configured via VIDEO_PROVIDER in .env. The system is pre-configured with working API keys - just use the tool directly.

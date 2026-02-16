@@ -1,0 +1,7 @@
+research
+dist
+gen
+app.log
+
+# Ignore local .opencode directory (data is stored in project root .opencode)
+.opencode/

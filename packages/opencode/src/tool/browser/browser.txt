@@ -1,0 +1,60 @@
+Browser automation tool for web interaction. Use this tool to navigate websites, extract interactive elements, click buttons, fill forms, execute JavaScript, take screenshots, and check browser status.
+
+**Auto-Start:** Chrome browser is automatically started in the sandbox when you use this tool. You don't need to manually start Chrome.
+
+## Actions
+
+### navigate
+Navigate to a URL and extract interactive elements.
+- url: Full URL to navigate (e.g., "https://example.com")
+- timeout: Navigation timeout in milliseconds (default: 15000)
+
+Returns a snapshot with interactive elements indexed as e0, e1, e2, etc.
+
+### snapshot
+Extract all interactive elements from the current page.
+Returns indexed elements with role and name for selection.
+Use this after navigation or page changes to get fresh element indices.
+
+### act
+Perform an action on the page.
+
+#### Click action
+- request.click.ref: Element reference from snapshot (e.g., "e0", "e5")
+
+#### Type action
+- request.type.ref: Element reference from snapshot
+- request.type.text: Text to type into the element
+- request.type.submit: Press Enter after typing (default: false)
+
+#### Script action (JavaScript execution)
+- request.script.code: JavaScript code to execute
+- request.script.returnByValue: Return primitive value instead of object (default: true)
+
+#### Wait action
+- request.wait.condition: "visible", "hidden", or "ready"
+- request.wait.ref: Element reference (optional, for visible/hidden)
+- request.wait.timeout: Maximum wait time in milliseconds (optional)
+
+### screenshot
+Capture screenshot of current viewport or full page.
+- fullPage: Capture entire scrollable page (default: false)
+- filename: Artifact filename (default: screenshot-<timestamp>.png)
+
+Returns screenshot artifact ID that can be downloaded.
+
+### status
+Get current browser state including URL, title, element count, and VNC availability.
+
+## Important Notes
+
+1. ALWAYS run snapshot before click/type to get current element indices
+2. Element indices (e0, e1, e2) are stable ONLY within the same snapshot
+3. After navigation or page changes, you MUST take a new snapshot
+4. If element not found error occurs, run snapshot again to get fresh indices
+5. VNC is available for real-time viewing
+6. Script execution allows flexible JavaScript control via request.script
+
+## Error Recovery
+
+All errors include actionable recovery suggestions. The recovery.suggestedNextAction field provides an executable next action that can be directly used to recover from the error.

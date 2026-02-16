@@ -1,0 +1,61 @@
+
+Running 1 test using 1 worker
+
+[BROWSER debug] [vite] connecting...
+[BROWSER debug] [vite] connected.
+[BROWSER log] [App] Execution started
+[BROWSER log] [GlobalSDK] Initialized with server URL: http://localhost:4096
+[BROWSER log] [App] Reached Router
+[BROWSER log] [Layout] Mounted successfully
+[BROWSER warning] Failed to decode downloaded font: http://localhost:3000/@fs/D:/C_Projects/Agent/opencode-ref/packages/ui/src/assets/fonts/ibm-plex-mono.woff2
+[BROWSER warning] OTS parsing error: invalid sfntVersion: 1114400120
+[BROWSER debug] [vite] hot updated: /src/index.css
+[BROWSER warning] Failed to decode downloaded font: http://localhost:3000/@fs/D:/C_Projects/Agent/opencode-ref/packages/ui/src/assets/fonts/ibm-plex-mono.woff2
+[BROWSER warning] OTS parsing error: invalid sfntVersion: 1114400120
+[BROWSER debug] [vite] hot updated: /src/index.css
+[E2E] Navigating to /global/session...
+[BROWSER debug] [vite] hot updated: /src/index.css
+[BROWSER REQUEST FAILED] http://localhost:4096/global/event - net::ERR_ABORTED
+[BROWSER error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[BROWSER REQUEST FAILED] http://localhost:3000/oc-theme-preload.js - net::ERR_ABORTED
+[BROWSER error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[BROWSER REQUEST FAILED] http://localhost:3000/assets/index-BRdB58v1.js - net::ERR_ABORTED
+[E2E] Reached session page: http://localhost:3000/global/session
+[E2E] Failed to find message-input. Found test IDs/content: []
+[E2E] Body HTML snippet: 
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" class="flex flex-col h-dvh p-px"></div>
+  
+
+
+  鉁? 1 [chromium] 鈥?e2e\message-rendering.test.ts:24:3 鈥?Message Rendering Flow 鈥?should create session and send a message successfully (16.9s)
+
+
+  1) [chromium] 鈥?e2e\message-rendering.test.ts:24:3 鈥?Message Rendering Flow 鈥?should create session and send a message successfully 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="message-input"]')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('[data-testid="message-input"]')[22m
+
+
+       at actions.ts:25
+
+      23 |     // Wait for the message input to be visible to ensure the page is loaded
+      24 |   try {
+    > 25 |     await expect(page.locator(messageInputSelector)).toBeVisible({ timeout: 10000 })
+         |                                                      ^
+      26 |   } catch (e) {
+      27 |     const testIds = await page.evaluate(() => {
+      28 |       return Array.from(document.querySelectorAll('[data-testid]')).map(el => (el as HTMLElement).innerText || (el as HTMLElement).dataset.testid)
+        at createSession (D:\C_Projects\Agent\opencode-ref\packages\app\e2e\actions.ts:25:54)
+        at D:\C_Projects\Agent\opencode-ref\packages\app\e2e\message-rendering.test.ts:26:5
+
+  1 failed
+    [chromium] 鈥?e2e\message-rendering.test.ts:24:3 鈥?Message Rendering Flow 鈥?should create session and send a message successfully 

@@ -1,0 +1,34 @@
+.DS_Store
+node_modules
+.worktrees
+.sst
+.env
+.idea
+.vscode
+*~
+playground
+tmp
+dist
+ts-dist
+.turbo
+**/.serena
+.serena/
+/result
+refs
+Session.vim
+opencode.json
+a.out
+target
+.scripts
+
+# Local dev files
+opencode-dev
+logs/
+
+# OpenCode project storage
+.opencode/storage/
+.opencode/cache/
+.opencode/config/
+.opencode/state/
+.opencode/bin/
+.opencode/log/

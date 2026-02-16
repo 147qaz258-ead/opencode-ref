@@ -1,0 +1,123 @@
+bun test v1.3.6 (d530ed99)
+
+packages\opencode\test\integration\multi-user-isolation.test.ts:
+INFO  2026-02-13T20:15:35 +326ms service=session id=ses_3a75afcbcffeDiiIh5jruTOCTA version=local projectID=user-test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv title=Session 1 mode=sandbox artifactIds=[] time={"created":1771013735235,"updated":1771013735235} created
+INFO  2026-02-13T20:15:35 +33ms service=bus type=session.created publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:35 +11ms service=config path=D:\C_Projects\Agent\opencode-ref\.opencode\config\config.json loading
+INFO  2026-02-13T20:15:35 +2ms service=config path=D:\C_Projects\Agent\opencode-ref\.opencode\config\opencode.json loading
+INFO  2026-02-13T20:15:35 +1ms service=config path=D:\C_Projects\Agent\opencode-ref\.opencode\config\opencode.jsonc loading
+INFO  2026-02-13T20:15:35 +18ms service=bun cmd=["C:\\Users\\29913\\.bun\\bin\\bun.exe","add","@opencode-ai/plugin@latest","--exact"] cwd=D:\C_Projects\Agent\opencode-ref\.opencode\config running
+INFO  2026-02-13T20:15:35 +20ms service=config path=.opencode\opencode.jsonc loading
+INFO  2026-02-13T20:15:35 +27ms service=config path=.opencode\opencode.json loading
+INFO  2026-02-13T20:15:35 +1ms service=bun cmd=["C:\\Users\\29913\\.bun\\bin\\bun.exe","add","@opencode-ai/plugin@latest","--exact"] cwd=.opencode running
+INFO  2026-02-13T20:15:35 +52ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:36 +888ms service=docker.container-lifecycle host=127.0.0.1 port=2375 Docker connection successful via TCP
+INFO  2026-02-13T20:15:36 +102ms service=container.user-lifecycle User container idle monitoring started
+INFO  2026-02-13T20:15:36 +1ms service=container.user-lifecycle Initializing UserContainerManager - scanning Docker for existing containers
+INFO  2026-02-13T20:15:36 +543ms service=container.user-lifecycle userId=test-user-usr_3a75bd427ffeTsu6Mc7N7TEUt0 containerId=9d4d1faf1940 status=running host=localhost apiPort=32811 playwrightPort=32813 Found existing user container
+INFO  2026-02-13T20:15:37 +264ms service=container.user-lifecycle userId=test-user-usr_3a75bd42affe2rqKzJJLm0W6qY containerId=a62fee609c4c status=running host=localhost apiPort=32806 playwrightPort=32808 Found existing user container
+INFO  2026-02-13T20:15:37 +247ms service=container.user-lifecycle userId=test-user-usr_3a75c7255ffefyJhYbvbcqGJ7N containerId=8596caa23c18 status=running host=localhost apiPort=32801 playwrightPort=32803 Found existing user container
+INFO  2026-02-13T20:15:37 +298ms service=container.user-lifecycle userId=test-user-usr_3a75c7258ffe3zoMKcGu3H6w2Y containerId=76e10562c404 status=running host=localhost apiPort=32796 playwrightPort=32798 Found existing user container
+WARN  2026-02-13T20:15:38 +282ms service=container.user-lifecycle containerId=4a2013335b71 Failed to resolve some container ports
+INFO  2026-02-13T20:15:38 +0ms service=container.user-lifecycle userId=test-user-usr_3a75db7cdffe1KrtCsSAOak9y4 containerId=4a2013335b71 status=stopped host=localhost apiPort=8080 playwrightPort=9223 Found existing user container
+INFO  2026-02-13T20:15:38 +270ms service=container.user-lifecycle userId=test-user-usr_3a75db7ceffekgeI40uQHzHBKK containerId=c4f061b31f8c status=running host=localhost apiPort=32791 playwrightPort=32793 Found existing user container
+INFO  2026-02-13T20:15:38 +276ms service=container.user-lifecycle userId=test-user-usr_3a763223affe023x0gqNS0OeqN containerId=7f6dfabfc866 status=running host=localhost apiPort=32786 playwrightPort=32788 Found existing user container
+INFO  2026-02-13T20:15:38 +288ms service=container.user-lifecycle userId=user-109702635802632294357 containerId=cbb2120ea048 status=running host=localhost apiPort=32781 playwrightPort=32783 Found existing user container
+INFO  2026-02-13T20:15:39 +271ms service=container.user-lifecycle userId=user-test-user-usr_3a814aae4ffemM2DlrH02zRJ49 containerId=2beeb217dd8d status=running host=localhost apiPort=32776 playwrightPort=32778 Found existing user container
+WARN  2026-02-13T20:15:39 +281ms service=container.user-lifecycle containerId=6ee36319baed Failed to resolve some container ports
+INFO  2026-02-13T20:15:39 +0ms service=container.user-lifecycle userId=global containerId=6ee36319baed status=stopped host=localhost apiPort=8080 playwrightPort=9223 Found existing user container
+INFO  2026-02-13T20:15:39 +1ms service=container.user-lifecycle containersFound=10 containerIds=["test-user-usr_3a75bd427ffeTsu6Mc7N7TEUt0","test-user-usr_3a75bd42affe2rqKzJJLm0W6qY","test-user-usr_3a75c7255ffefyJhYbvbcqGJ7N","test-user-usr_3a75c7258ffe3zoMKcGu3H6w2Y","test-user-usr_3a75db7cdffe1KrtCsSAOak9y4","test-user-usr_3a75db7ceffekgeI40uQHzHBKK","test-user-usr_3a763223affe023x0gqNS0OeqN","user-109702635802632294357","user-test-user-usr_3a814aae4ffemM2DlrH02zRJ49","global"] UserContainerManager initialized
+INFO  2026-02-13T20:15:39 +0ms service=container.user-lifecycle userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv Creating new container for user
+INFO  2026-02-13T20:15:39 +1ms service=docker.manager sessionId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv Creating container for session
+INFO  2026-02-13T20:15:39 +2ms service=docker.volume-manager sessionId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv path=D:\C_Projects\Agent\opencode-ref\.opencode\storage\temp\test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv\test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv Created temp volume
+INFO  2026-02-13T20:15:40 +1292ms service=docker.manager sessionId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 Container created for session
+INFO  2026-02-13T20:15:41 +343ms service=container.user-lifecycle userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 Container created for user
+INFO  2026-02-13T20:15:41 +1ms service=session.docker sessionId=ses_3a75afcbcffeDiiIh5jruTOCTA userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 status=running attempt=1 User container ready for session
+INFO  2026-02-13T20:15:41 +3ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:41 +0ms service=session sessionId=ses_3a75afcbcffeDiiIh5jruTOCTA containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 host=localhost apiPort=32816 status=running Container bound to session
+INFO  2026-02-13T20:15:41 +3ms service=session id=ses_3a75ae5feffeGEi6EohJV9N5hN version=local projectID=user-test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv title=Session 2 mode=sandbox artifactIds=[] time={"created":1771013741058,"updated":1771013741058} created
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:41 +1ms service=bus type=session.created publishing
+INFO  2026-02-13T20:15:41 +0ms service=bus type=session.updated publishing
+INFO  2026-02-13T20:15:41 +314ms service=session.docker sessionId=ses_3a75ae5feffeGEi6EohJV9N5hN userId=test-user-usr_3a75afcc1ffe4tlU7FlGTwLNdv containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 status=running attempt=1 User container ready for session
+INFO  2026-02-13T20:15:41 +2ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+INFO  2026-02-13T20:15:41 +1ms service=session sessionId=ses_3a75ae5feffeGEi6EohJV9N5hN containerId=a2c3bb3274422da06edce70293554dbc2efce381f2c054797bb2d5fe407946d2 host=localhost apiPort=32816 status=running Container bound to session
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:41 +3ms service=session id=ses_3a75ae4bcffeo83mwAJITx29v4 version=local projectID=user-test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr title=Session 3 mode=sandbox artifactIds=[] time={"created":1771013741379,"updated":1771013741379} created
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+INFO  2026-02-13T20:15:41 +2ms service=bus type=session.created publishing
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:41 +1ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:41 +186ms service=container.user-lifecycle userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr Creating new container for user
+INFO  2026-02-13T20:15:41 +0ms service=docker.manager sessionId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr Creating container for session
+INFO  2026-02-13T20:15:41 +1ms service=docker.volume-manager sessionId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr path=D:\C_Projects\Agent\opencode-ref\.opencode\storage\temp\test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr\test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr Created temp volume
+INFO  2026-02-13T20:15:42 +1248ms service=docker.manager sessionId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr containerId=0401336284c47e5e9771c6a769ab75cfd343e279fcd253004d8c7bf797014421 Container created for session
+INFO  2026-02-13T20:15:43 +459ms service=container.user-lifecycle userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr containerId=0401336284c47e5e9771c6a769ab75cfd343e279fcd253004d8c7bf797014421 Container created for user
+INFO  2026-02-13T20:15:43 +0ms service=session.docker sessionId=ses_3a75ae4bcffeo83mwAJITx29v4 userId=test-user-usr_3a75afcc0ffeNvZ7zLXJfHtgFr containerId=0401336284c47e5e9771c6a769ab75cfd343e279fcd253004d8c7bf797014421 status=running attempt=1 User container ready for session
+INFO  2026-02-13T20:15:43 +3ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:43 +0ms service=session sessionId=ses_3a75ae4bcffeo83mwAJITx29v4 containerId=0401336284c47e5e9771c6a769ab75cfd343e279fcd253004d8c7bf797014421 host=localhost apiPort=32821 status=running Container bound to session
+INFO  2026-02-13T20:15:43 +3ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:43 +1ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+INFO  2026-02-13T20:15:43 +2ms service=bus type=session.updated publishing
+[DEBUG Bus.publish] Attempting to get local state
+[DEBUG Bus.publish] Local state found, notifying subscribers
+[DEBUG Bus.publish] Notifying GlobalBus {
+  directory: "global",
+}
+(pass) Multi-User Isolation > concurrent sessions for same user share container [8063.00ms]
+
+ 1 pass
+ 0 fail
+ 2 expect() calls
+Ran 1 test across 1 file. [10.98s]

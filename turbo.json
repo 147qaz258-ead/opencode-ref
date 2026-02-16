@@ -1,0 +1,11 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "test:e2e": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false
+    }
+  }
+}

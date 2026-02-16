@@ -1,0 +1,6 @@
+# Patch existing image to update server.js without re-running apt-get
+FROM opencode-sandbox-playwright:latest
+
+# Update server.js with correct chromium path
+# Update server.js with correct chromium path and combined shell/file API
+COPY docker/combined-server.js /opt/playwright-server/server.js

@@ -1,0 +1,36 @@
+Create a scheduled task that will automatically execute at specified intervals.
+
+Parameters:
+- title: A short (3-5 words) description of the scheduled task
+- description: A detailed description of what the task should do
+- prompt: The task for the AI to perform when the schedule triggers
+- schedule: Cron expression defining when to run the task (e.g., "0 0 * * *" for daily at midnight)
+
+When to use the Scheduled Task tool:
+- When you need to create recurring automated tasks
+- When you want to schedule AI operations to run periodically
+- When you need to automate repetitive workflows
+
+When NOT to use the Scheduled Task tool:
+- If you want to run a task immediately, use the Task tool instead
+- If you need to schedule tasks with complex dependencies, consider using a workflow engine
+- If the schedule requires human intervention, use a different approach
+
+Usage notes:
+1. The schedule parameter uses standard cron expressions
+2. Tasks are created with the current project context
+3. The task will be automatically executed according to the schedule
+4. You can view and manage scheduled tasks through the scheduler interface
+
+Example usage:
+<example>
+user: "I want to create a daily backup task that runs at 2 AM"
+assistant: "I'll create a scheduled task for daily backups at 2 AM"
+assistant: Uses the Scheduled Task tool to create the task
+</example>
+
+<example>
+user: "Create a weekly report generation task that runs every Monday at 9 AM"
+assistant: "I'll create a scheduled task for weekly reports on Mondays at 9 AM"
+assistant: Uses the Scheduled Task tool to create the task
+</example>

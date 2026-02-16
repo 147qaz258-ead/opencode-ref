@@ -1,0 +1,5 @@
+Lists files and directories in the sandbox workspace.
+
+**SANDBOX ENVIRONMENT:** Lists contents in the isolated Docker container. The path parameter is absolute path within the container.
+
+The path parameter is absolute path; omit it to use the current workspace directory. You can optionally provide an array of glob patterns to ignore with the ignore parameter. You should generally prefer the Glob and Grep tools, if you know which directories to search.

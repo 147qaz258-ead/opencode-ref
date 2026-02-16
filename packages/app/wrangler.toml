@@ -1,0 +1,13 @@
+name = "clawdone-app"
+compatibility_date = "2024-03-01"
+compatibility_flags = ["nodejs_compat"]
+
+[site]
+bucket = "./dist"
+
+[build]
+command = "npm run build"
+watch_dir = "/src"
+
+[[env_vars]]
+NODE_VERSION = "20"

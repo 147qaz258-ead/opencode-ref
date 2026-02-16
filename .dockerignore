@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+.opencode/tmp
+*.log
+.DS_Store
+coverage
+dist
+.next
+.vscode
+.idea
+*.tsbuildinfo
+bun.lockb

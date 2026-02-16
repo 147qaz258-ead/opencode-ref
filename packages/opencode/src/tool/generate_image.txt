@@ -1,0 +1,34 @@
+Generate images from text descriptions using AI models. The system uses the provider configured in your environment (IMAGE_PROVIDER in .env).
+
+## Parameters
+
+- prompt (required): The text description of the image to generate
+- model (optional): Override the default model. If not specified, uses the configured IMAGE_MODEL or provider's default
+- Additional parameters are passed through to the provider (e.g., size, n, negative_prompt, num_inference_steps, guidance_scale)
+
+## Supported Image Providers
+
+### zhipu (Zhipu AI)
+- Models: cogview-3, cogview-3-plus, cogview-3-flash
+- API: https://open.bigmodel.cn
+
+### modelscope (ModelScope 魔搭社区)
+- Models: Qwen/Qwen-Image-2512, flux-schnell, stable-diffusion-3-medium
+- Free tier: 2000 calls/day
+- API: https://api-inference.modelscope.cn
+
+### hunyuan (Tencent Hunyuan 腾讯混元)
+- Models: hunyuan-image
+- API: https://hunyuan.tencentcloudapi.com
+
+### huggingface (Hugging Face Inference)
+- Models: stabilityai/stable-diffusion-3-medium, flux-schnell, and thousands of open-source models
+- API: https://api-inference.huggingface.co
+
+## Output
+
+The generated image is saved to /workspace/outputs/image_{timestamp}.png and automatically displayed in the Monitor Panel.
+
+## Configuration
+
+The provider is configured via IMAGE_PROVIDER in .env. The system is pre-configured with working API keys - just use the tool directly.

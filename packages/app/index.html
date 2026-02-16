@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN" style="background-color: var(--background-base)">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenCode</title>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#F8F7F7" />
+    <meta name="theme-color" content="#131010" media="(prefers-color-scheme: dark)" />
+    <meta property="og:image" content="/social-share.png" />
+    <meta property="twitter:image" content="/social-share.png" />
+    <!-- Floating-ui fix - patch getComputedStyle before any modules load -->
+    <script>
+      ;(function () {
+        var originalGetComputedStyle = window.getComputedStyle
+        window.getComputedStyle = function (element, pseudoElt) {
+          // Handle null, undefined, or non-Element values
+          if (!element || typeof element.nodeType !== "number") {
+            // Create a safe dummy element if needed
+            var dummy = document.getElementById("floating-ui-dummy")
+            if (!dummy) {
+              dummy = document.createElement("div")
+              dummy.id = "floating-ui-dummy"
+              dummy.style.display = "none"
+              document.body.appendChild(dummy)
+            }
+            return originalGetComputedStyle.call(window, dummy, pseudoElt)
+          }
+          // Check if element is still connected to DOM
+          if (!element.isConnected) {
+            var dummy = document.getElementById("floating-ui-dummy")
+            if (!dummy) {
+              dummy = document.createElement("div")
+              dummy.id = "floating-ui-dummy"
+              dummy.style.display = "none"
+              document.body.appendChild(dummy)
+            }
+            return originalGetComputedStyle.call(window, dummy, pseudoElt)
+          }
+          try {
+            return originalGetComputedStyle.call(window, element, pseudoElt)
+          } catch (e) {
+            // If anything fails, return dummy style
+            var dummy = document.getElementById("floating-ui-dummy")
+            if (!dummy) {
+              dummy = document.createElement("div")
+              dummy.id = "floating-ui-dummy"
+              dummy.style.display = "none"
+              document.body.appendChild(dummy)
+            }
+            return originalGetComputedStyle.call(window, dummy, pseudoElt)
+          }
+        }
+      })()
+    </script>
+    <!-- Theme preload script - applies cached theme to avoid FOUC -->
+    <script id="oc-theme-preload-script">
+      ;(function () {
+        var themeId = localStorage.getItem("opencode-theme-id")
+        if (!themeId) return
+
+        var scheme = localStorage.getItem("opencode-color-scheme") || "system"
+        var isDark = scheme === "dark" || (scheme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
+        var mode = isDark ? "dark" : "light"
+
+        document.documentElement.dataset.theme = themeId
+        document.documentElement.dataset.colorScheme = mode
+
+        if (themeId === "oc-1") return
+
+        var css = localStorage.getItem("opencode-theme-css-" + themeId + "-" + mode)
+        if (css) {
+          var style = document.createElement("style")
+          style.id = "oc-theme-preload"
+          style.textContent =
+            ":root{color-scheme:" +
+            mode +
+            ";--text-mix-blend-mode:" +
+            (isDark ? "plus-lighter" : "multiply") +
+            ";" +
+            css +
+            "}"
+          document.head.appendChild(style)
+        }
+      })()
+    </script>
+  </head>
+  <body class="antialiased overscroll-none text-12-regular overflow-hidden h-screen">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" class="flex flex-col h-full min-h-screen"></div>
+    <script src="/src/entry.tsx" type="module"></script>
+  </body>
+</html>
