@@ -7,110 +7,83 @@
     </picture>
   </a>
 </p>
-<p align="center">The open source AI coding agent.</p>
-<p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
-</p>
-
-[![OpenCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+<p align="center">开源 AI 编程智能体 (AI Coding Agent)。</p>
 
 ---
 
-### Installation
+## 🏗️ 整体架构 (Overall Architecture)
 
-```bash
-# YOLO
-curl -fsSL https://opencode.ai/install | bash
+OpenCode 采用高度解耦的 **客户端-服务器 (Client-Server)** 架构，旨在提供跨平台的原生性能与云端灵活性。
 
-# Package managers
-npm i -g opencode-ai@latest        # or bun/pnpm/yarn
-scoop bucket add extras; scoop install extras/opencode  # Windows
-choco install opencode             # Windows
-brew install opencode              # macOS and Linux
-paru -S opencode-bin               # Arch Linux
-mise use -g opencode               # Any OS
-nix run nixpkgs#opencode           # or github:anomalyco/opencode for latest dev branch
+### 核心架构图 (Mermaid)
+
+```mermaid
+graph TD
+    User((用户)) -->|交互| UI[前端 UI / CLI]
+    UI -->|API / WebSocket| Server[OpenCode 核心服务器]
+
+    subgraph "Server 内部"
+        Server --> Agent[智能体引擎 - Agent]
+        Agent --> Tool[工具箱 - Tools]
+        Agent --> Brain[大模型引擎 - LLM Providers]
+    end
+
+    subgraph "沙箱隔离层"
+        Tool -->|执行指令| Sandbox[原生沙箱 / Docker / E2B]
+        Sandbox <--> LocalFS[本地文件系统]
+    end
+
+    Server -->|同步| Sync[Global Sync 层]
+    Sync --> DB[(数据库 - SQLite/Mongo)]
 ```
 
-> [!TIP]
-> Remove versions older than 0.1.x before installing.
+### 关键组件说明：
 
-### Desktop App (BETA)
-
-OpenCode is also available as a desktop application. Download directly from the [releases page](https://github.com/anomalyco/opencode/releases) or [opencode.ai/download](https://opencode.ai/download).
-
-| Platform              | Download                              |
-| --------------------- | ------------------------------------- |
-| macOS (Apple Silicon) | `opencode-desktop-darwin-aarch64.dmg` |
-| macOS (Intel)         | `opencode-desktop-darwin-x64.dmg`     |
-| Windows               | `opencode-desktop-windows-x64.exe`    |
-| Linux                 | `.deb`, `.rpm`, or AppImage           |
-
-```bash
-# macOS (Homebrew)
-brew install --cask opencode-desktop
-```
-
-#### Installation Directory
-
-The install script respects the following priority order for the installation path:
-
-1. `$OPENCODE_INSTALL_DIR` - Custom installation directory
-2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
-3. `$HOME/bin` - Standard user binary directory (if exists or can be created)
-4. `$HOME/.opencode/bin` - Default fallback
-
-```bash
-# Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
-```
-
-### Agents
-
-OpenCode includes two built-in agents you can switch between with the `Tab` key.
-
-- **build** - Default, full access agent for development work
-- **plan** - Read-only agent for analysis and code exploration
-  - Denies file edits by default
-  - Asks permission before running bash commands
-  - Ideal for exploring unfamiliar codebases or planning changes
-
-Also, included is a **general** subagent for complex searches and multistep tasks.
-This is used internally and can be invoked using `@general` in messages.
-
-Learn more about [agents](https://opencode.ai/docs/agents).
-
-### Documentation
-
-For more info on how to configure OpenCode [**head over to our docs**](https://opencode.ai/docs).
-
-### Contributing
-
-If you're interested in contributing to OpenCode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
-
-### Building on OpenCode
-
-If you are working on a project that's related to OpenCode and is using "opencode" as a part of its name; for example, "opencode-dashboard" or "opencode-mobile", please add a note to your README to clarify that it is not built by the OpenCode team and is not affiliated with us in any way.
-
-### FAQ
-
-#### How is this different from Claude Code?
-
-It's very similar to Claude Code in terms of capability. Here are the key differences:
-
-- 100% open source
-- Not coupled to any provider. Although we recommend the models we provide through [OpenCode Zen](https://opencode.ai/zen); OpenCode can be used with Claude, OpenAI, Google or even local models. As models evolve the gaps between them will close and pricing will drop so being provider-agnostic is important.
-- Out of the box LSP support
-- A focus on TUI. OpenCode is built by neovim users and the creators of [terminal.shop](https://terminal.shop); we are going to push the limits of what's possible in the terminal.
-- A client/server architecture. This for example can allow OpenCode to run on your computer, while you can drive it remotely from a mobile app. Meaning that the TUI frontend is just one of the possible clients.
-
-#### What's the other repo?
-
-The other confusingly named repo has no relation to this one. You can [read the story behind it here](https://x.com/thdxr/status/1933561254481666466).
+1.  **Frontend (前端)**: 支持 TUI (终端界面) 和 Web 界面。所有的交互逻辑都通过标准的 API 与后端通信。
+2.  **Server (服务端)**: 中央大脑，负责协调智能体决策、工具调用和会话状态管理。
+3.  **Agent (智能体)**: 支持多种模式（如 `build` 生产模式和 `plan` 只读规划模式）。
+4.  **Sandbox (沙箱)**: **核心安全保障**。OpenCode 在独立沙箱中执行 Bash 命令和读写操作，支持本地 Docker 隔离或云端 E2B 隔离。
+5.  **Environment (环境)**: 遵循“原生优先”设计，Agent 能够直接感知并操作其所在的容器或主机环境。
 
 ---
 
-**Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+## 🚀 快速开始
+
+### 安装
+
+```bash
+# Windows
+scoop bucket add extras; scoop install extras/opencode
+# 或使用 npm
+npm i -g opencode-ai@latest
+```
+
+### 桌面应用 (BETA)
+
+您可以从 [发布页面](https://github.com/anomalyco/opencode/releases) 下载桌面客户端。
+
+---
+
+## 🤖 智能体说明
+
+OpenCode 内置了两个主要智能体，可以通过 `Tab` 键切换：
+
+- **build**: 默认智能体，具有文件修改和指令执行的全权限。
+- **plan**: 只读模式智能体，适用于代码分析和重构规划，在执行危险操作前会强制询问。
+
+---
+
+## 🛡️ 安全与隐私
+
+- **环境变量屏蔽**: 本项目已对敏感 API 密匙进行脱敏处理。
+- **沙箱隔离**: 所有的代码执行都在受控沙箱内进行，不会泄露主机权限。
+
+---
+
+## 🤝 参与贡献
+
+如果您想为 OpenCode 做出贡献，请先阅读 [贡献指南](./CONTRIBUTING.md)。
+
+---
+
+**加入我们的社区** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
