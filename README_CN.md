@@ -7,60 +7,84 @@
     </picture>
   </a>
 </p>
-<p align="center">开源 AI 编程智能体 (AI Coding Agent)。</p>
+<p align="center">开源 AI 编程智能体 (AI Coding Agent) - **Reference 版**</p>
 
 ---
 
 ## 🏗️ 整体架构 (Overall Architecture)
 
-OpenCode 采用高度解耦的 **客户端-服务器 (Client-Server)** 架构，旨在提供跨平台的原生性能与云端灵活性。
+本项目采用创新的 **大脑-躯体 (Brain-Body)** 架构，实现了逻辑推理与代码执行的物理隔离。
 
 ### 核心架构图 (Mermaid)
 
 ```mermaid
 graph TD
     User((用户)) -->|交互| UI[前端 UI / CLI]
-    UI -->|API / WebSocket| Server[OpenCode 核心服务器]
+    UI -->|API / WebSocket| Brain[OpenCode Server - 大脑]
 
-    subgraph "Server 内部"
-        Server --> Agent[智能体引擎 - Agent]
-        Agent --> Tool[工具箱 - Tools]
-        Agent --> Brain[大模型引擎 - LLM Providers]
+    subgraph "大脑 (The Brain)"
+        Brain --> Agent[Agent Engine]
+        Agent --> ToolSet[Tool Registry]
     end
 
-    subgraph "沙箱隔离层"
-        Tool -->|执行指令| Sandbox[原生沙箱 / Docker / E2B]
-        Sandbox <--> LocalFS[本地文件系统]
+    subgraph "躯体 (The Body / Sandboxes)"
+        ToolSet -->|指令分发| Executor[Sandbox Executor]
+        Executor -->|HTTP| HttpBody[Remote Body - HttpApi]
+        Executor -->|Local| DockerBody[Container Body - Docker]
+        Executor -->|Cloud| E2BBody[Serverless Body - E2B]
     end
 
-    Server -->|同步| Sync[Global Sync 层]
-    Sync --> DB[(数据库 - SQLite/Mongo)]
+    HttpBody <--> LocalFS[文件系统]
+    DockerBody <--> LocalFS
+    E2BBody <--> CloudFS[云端文件系统]
 ```
 
-### 关键组件说明：
+### 关键重构特性：
 
-1.  **Frontend (前端)**: 支持 TUI (终端界面) 和 Web 界面。所有的交互逻辑都通过标准的 API 与后端通信。
-2.  **Server (服务端)**: 中央大脑，负责协调智能体决策、工具调用和会话状态管理。
-3.  **Agent (智能体)**: 支持多种模式（如 `build` 生产模式和 `plan` 只读规划模式）。
-4.  **Sandbox (沙箱)**: **核心安全保障**。OpenCode 在独立沙箱中执行 Bash 命令和读写操作，支持本地 Docker 隔离或云端 E2B 隔离。
-5.  **Environment (环境)**: 遵循“原生优先”设计，Agent 能够直接感知并操作其所在的容器或主机环境。
+1.  **大脑-躯体分离 (Brain-Body Separation)**:
+    - **大脑 (Brain)**: 运行在主控端，负责 LLM 决策、会话状态和安全性审计。
+    - **躯体 (Body)**: 运行在受控隔离环境（沙箱）。它只接收经过大脑授权的原子指令（如 `read`, `write`, `exec`）。
+
+2.  **多后端沙箱系统 (Multi-Backend Sandbox)**:
+    - **HttpApiBackend**: 远程控制模式。通过轻量级 HTTP API 操纵已经启动的容器。
+    - **DockerBackend**: 原生容器管理。利用 `dockerode` 自动化创建、挂载卷和销毁会话容器。
+    - **E2BBackend**: 云端无服务器沙箱。支持按需分配极其安全的云端执行环境。
+
+3.  **容器生命周期管理 (Container Lifecycle)**:
+    - 自动检测会话活跃度，支持空闲超时自动销毁（`OPENCODE_CONTAINER_IDLE_TIMEOUT`）。
+    - 透明的卷挂载（Volume Mounts），确保代码变更在容器重启后依然存在。
+
+4.  **安全隔离 (Security Isolation)**:
+    - 所有的 bash 指令都在 `Sandbox` 层加固，防止 Agent 逃逸至主控机。
+    - 敏感环境变量（如 API Keys）仅保留在“大脑”端，不会下发至执行环境。
+
+---
+
+## ✨ 高级特性 (Advanced Features)
+
+- **Model Context Protocol (MCP)**: 原生支持 MCP 协议，可动态扩展 Agent 的工具集，并支持基于 OAuth 的身份认证。
+- **全流程 E2E 测试**: 配备完整的 Playwright 测试套件，覆盖从会话启动到代码生成的全链路场景。
+- **云原生沙箱**: 深度集成 E2B，支持在毫秒级分配独立的云端开发环境。
 
 ---
 
 ## 🚀 快速开始
 
-### 安装
+### 环境变量配置
+
+复制 `.env.example` 并配置您的 API Key：
 
 ```bash
-# Windows
-scoop bucket add extras; scoop install extras/opencode
-# 或使用 npm
-npm i -g opencode-ai@latest
+cp .env.example .env
+# 编辑 .env 文件
 ```
 
-### 桌面应用 (BETA)
+### 本地开发
 
-您可以从 [发布页面](https://github.com/anomalyco/opencode/releases) 下载桌面客户端。
+```bash
+bun install
+bun run dev
+```
 
 ---
 
@@ -69,14 +93,14 @@ npm i -g opencode-ai@latest
 OpenCode 内置了两个主要智能体，可以通过 `Tab` 键切换：
 
 - **build**: 默认智能体，具有文件修改和指令执行的全权限。
-- **plan**: 只读模式智能体，适用于代码分析和重构规划，在执行危险操作前会强制询问。
+- **plan**: 只读模式智能体，适用于代码分析和重构规划。
 
 ---
 
 ## 🛡️ 安全与隐私
 
 - **环境变量屏蔽**: 本项目已对敏感 API 密匙进行脱敏处理。
-- **沙箱隔离**: 所有的代码执行都在受控沙箱内进行，不会泄露主机权限。
+- **执行审计**: “大脑”端记录所有工具调用日志，方便回溯。
 
 ---
 
